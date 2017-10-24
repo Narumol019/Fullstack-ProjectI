@@ -1,105 +1,130 @@
+function deletepost(id) {
+  alert('ํYOU WANT TO DELETE THIS POST ? ');
+
+  //Delete from back end
+  $.ajax({
+    url: "http://localhost:3000/posts/" + id, // post id
+    type: "DELETE" // Use DELETE
+  })
+  alert('DELETE COMPLETE');
+  setTimeout(window.location.href = "index.html");
+  //Delete from front end
+  $("#posts" + id).empty();
+
+}
+/*------------------------------------------------------------------------------------------------------ */
 /*
-*  This event listener will populate the top of the home screen with user stories when the page is initialized.
-*  It uses the generateStoryBubbles function to do so.
-*/
-$(document).ready(function () {
-  var url ="http://localhost:3000/posts";
-  //create
-  $("#postpin").click(function () {
-    $.post(url,{
-   
-      discrip: "zom",
-      location:"zom"});
-      alert('complate');
-    });
-
-    var id = $("#id").val();
-    var massage = $("#massage").val();
-    var location = $("#location").val();
-    
-    $.post( url, function( data ) {
-      
-       
-    });
-  });
-});
+function disTxt(id){
   
+  document.getElementById("desc"+id).style.display = "block";
 
-  document.addEventListener('init', function (event) {
+}
 
-    var page = event.target;
 
-    if (page.id == "home-page") {
-      var stories = page.querySelector('#stories');
-
-      generateStoryBubbles(stories);
-    }
-
+/*แก้ไขโพสเพื่อเปิดจาก อ่านเท่านั่นเป็นแก้ไขได้*  ***อยู่ตรงนี้่มันอยู่ตรงนี้++++++++++ที่เปลี่ยนสเตตัสไงเหลือเปลี่ยนกลับนะ***/ 
+function editpost(id) {
+  console.log(id);
+  var url = "http://localhost:3000/posts";
+  $("#desc" + id).hide();
+  $("#descedit" + id).prop('type', "text");
+}
+/*
+  $.ajax({
+      type: 'PUT',
+      //data: {name: 'Billy Bob', age: 28},
+      url: url + "/" + id,
+      success: function () {
+          //no data...just a success (200) status code
+          console.log(id);
+      }
   });
-
-  //The show event listener does the same thing as the one above but on the search page when it's shown.
-
-  document.addEventListener('show', function (event) {
-    var page = event.target;
-
-    if (page.id == "search-page") {
-      var channels = page.querySelector('#channels');
-
-      generateStoryBubbles(channels);
-    }
-  });
-
-  /*
-  * This function is used to toggle the grid/list display of the posts in the profile page as well as
-  * change the color of the buttons to show which is the current view.
   */
 
-  function display(id) {
-    document.getElementById("list").style.color = "#1f1f21";
-    document.getElementById("grid").style.color = "#1f1f21";
-    document.getElementById(id).style.color = "#5fb4f4";
 
-    document.getElementById("list_view").style.display = "none";
-    document.getElementById("grid_view").style.display = "none";
-    document.getElementById(id + "_view").style.display = "block";
-  }
+/*แก้ไข้*/
+function savepost(id, location, desc) {
+  // console.log(id,title)
+  var location = location;
+  var desc = desc;
+  var picture = picture;
+  var newposts = {};
 
-  //The generateStoryBubbles function is used to create the carousel items be used as stories by the upper two events.
+  newposts.id = id;
+  newposts.like = "20";
+  newposts.picture = $("#picture" + id).val(),
+    newposts.desc = $("#desc" + id).val();
+  newposts.location = $("#location" + id).val();
 
-  function generateStoryBubbles(element) {
-    for (var i = 0; i < 9; i++) {
-      element.appendChild(ons.createElement(
-        '<ons-carousel-item>' +
-        '<div class="story">' +
-        '<div class="story-thumbnail-wraper unread"><img class="story-thumbnail" src="assets/img/profile-image-0' + (i + 1) + '.png" onclick="readStory(this)"></div>' +
-        '<p>david_graham</p>' +
-        '</div>' +
-        '</ons-carousel-item>'
-      ));
+
+  var url = "http://localhost:3000/posts/" + id;
+  $.ajax({
+    type: 'PUT',
+    data: newposts,
+    url: url,
+    success: function () {
+      //no data...just a success (200) status code
+      console.log(newposts);
     }
-  }
+  });
+}
 
-  //The Like function is used to make the white heart appear in front of the picture as well as make the like button into a red heart and vice versa.
 
-  var like = function (num) {
-    if (document.getElementById("button-post-like-" + num).classList.contains("like")) {
-      document.getElementById("button-post-like-" + num).classList.remove("ion-ios-heart", "like");
-      document.getElementById("button-post-like-" + num).classList.add("ion-ios-heart-outline");
-    } else {
-      document.getElementById("button-post-like-" + num).classList.remove("ion-ios-heart-outline");
-      document.getElementById("button-post-like-" + num).classList.add("ion-ios-heart", "like");
-      document.getElementById("post-like-" + num).style.opacity = 1;
+$(document).ready(function () {
+  var $desc = $('#desc');
+  var $location = $('#location');
+  var $picture = $('#picture');
 
-      setTimeout(function () {
-        document.getElementById("post-like-" + num).style.opacity = 0;
-      }, 600);
+  var url = "http://localhost:3000/posts"
+  $.ajax({
+    url: url,
+    method: "GET",
+    success: function (data, status, xhr) {
+      console.log(data);
+      var template = $('#template').html();
+      for (var i = 0; i < data.length; i++) {
+        var rendered = Mustache.render(template, data[i]);
+        $("#posts").append(rendered);
+      }
     }
-  }
+  })
 
-  //The readStory function is used to change the red circle around a new story into grey after tapping on the new storry (thus reading it)
 
-  var readStory = function (event) {
-    event.parentNode.classList.remove("unread");
-    event.parentNode.classList.add("read");
-  }
 
+
+  //create
+  $("#postpin").click(function () {
+    console.log($("#desc").val());
+    $.post(url, {
+      desc: $("#desc").val(),
+      location: $("#location").val(),
+      picture: $("#picture").val(),
+      like: "20",
+
+
+    });
+    setTimeout(window.location.href = "index.html");
+
+
+  });
+  /*
+  //update have error
+  $("#btnU").click(function () {
+    $.get(url + "/3", function (data, status) {
+      console.log(data);
+      var newuser = {};
+      newuser.id = data.id;
+      newuser.title = "zzzzzzzzzzzzzzz";
+      console.log(JSON.stringify(newuser));
+      var updateUrl = url + "/3";
+      $.ajax({
+        url: updateUrl,
+        type: 'PUT',
+        data: newuser,
+        success: function (result) {
+          console.log('Updated!');
+        }
+      });
+    });
+  });
+  */
+});

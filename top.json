@@ -1,47 +1,18 @@
 {
   "posts": [
     {
-      "id": 1,
-      "discrip": "json-server",
-      "location": "typicode",
-      "\"tttttttt\"": "",
-      "\"tttttttttt\"": "",
-      "{\"readyState\":1}": ""
+      "id": 2,
+      "like": "20",
+      "picture": "",
+      "desc": "a  ",
+      "location": "a  "
     },
     {
       "id": 3,
-      "discrip": "json-server",
-      "location": "typicode"
-    },
-    {
-      "discrip": "John",
-      "location": "2pm",
-      "id": 4
-    },
-    {
-      "discrip": "testU",
-      "location": "testU",
-      "id": 5
-    },
-    {
-      "discrip": "John",
-      "location": "2pm",
-      "id": 6
-    },
-    {
-      "discrip": "John",
-      "location": "2pm",
-      "id": 7
+      "like": "20",
+      "picture": "",
+      "desc": " น้องบิ๊ก",
+      "location": " "
     }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
